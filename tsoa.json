@@ -1,0 +1,38 @@
+{
+  "entryFile": "src/server.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/**/*.ts"],
+  "spec": {
+    "securityDefinitions": {
+      "basic": {
+        "type": "apiKey",
+        "name": "authorization",
+        "in": "header"
+      },
+      "google_oauth": {
+        "type": "oauth2",
+        "description": "Google OAuth 2.0",
+        "flow": "accessCode",
+        "authorizationUrl": "https://accounts.google.com/o/oauth2/auth",
+        "tokenUrl": "https://oauth2.googleapis.com/token",
+        "refreshUrl": "http://localhost:8000/api/auth/callback",
+        "scopes": {
+          "https://www.googleapis.com/auth/userinfo.email": "Access user email address",
+          "https://www.googleapis.com/auth/userinfo.profile": "Access user profile info",
+          "https://www.googleapis.com/auth/contacts.readonly": "Access contacts"
+        }
+      }
+    },
+    "basePath": "/api",
+    "outputDirectory": "src",
+    "specVersion": 3
+  },
+  "routes": {
+    "authenticationModule": "./src/middlewares/authentication.ts",
+    "basePath": "/api",
+    "routesDir": "src"
+  },
+  "compilerOptions": {
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  }
+}

@@ -1,0 +1,5 @@
+build/*
+ecosystem.config*.js
+src/swagger.json
+src/routes.ts
+*.html
