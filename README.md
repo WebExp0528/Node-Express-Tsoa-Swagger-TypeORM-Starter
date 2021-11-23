@@ -1,6 +1,6 @@
-# gmail-extension-server
+# Node-Express-Tsoa-Swagger-TypeORM-Starter
 
-Gmail Chrome Extension Backend
+Node, Express, Tsoa, Swagger, TypeORM, Docker, PostgreSQL Starter Project
 
 ## Set up Configuration
 
