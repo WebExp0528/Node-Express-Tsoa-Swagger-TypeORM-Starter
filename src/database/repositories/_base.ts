@@ -1,4 +1,4 @@
-import { FindConditions, FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository, FindOptionsWhere } from 'typeorm';
 import { BaseEntity } from '../entities/_base';
 import { getDbConnection } from '..';
 import { PostgresError } from '../postgres/error';
@@ -24,7 +24,7 @@ export abstract class BaseRepository<
   constructor(private readonly classFn: new () => Class) {}
 
   public findOne(options: FindOneOptions<Class>): Promise<Props | undefined> {
-    return this.execute((repo) => repo.findOne(options));
+    return this.execute((repo) => repo.findOne(options)) as any;
   }
 
   public find(options: FindManyOptions<Class>): Promise<Props[]> {
@@ -39,8 +39,8 @@ export abstract class BaseRepository<
         ...model,
         created_at: now,
         updated_at: now,
-      })
-    );
+      } as any)
+    ) as any;
   }
 
   public update(model: Props): Promise<Props> {
@@ -48,11 +48,11 @@ export abstract class BaseRepository<
       repo.save({
         ...model,
         updated_at: new Date(),
-      } as CreateProps & Props)
-    );
+      } as any)
+    ) as any;
   }
 
-  public async delete(options: FindConditions<Class>): Promise<void> {
+  public async delete(options: FindOptionsWhere<Class>): Promise<void> {
     await this.execute((repo) => repo.delete(options));
   }
 
@@ -60,7 +60,7 @@ export abstract class BaseRepository<
     try {
       const repo = await this.getRepository();
       return await fn(repo);
-    } catch (err) {
+    } catch (err: any) {
       throw new PostgresError(err.message, err);
     }
   }

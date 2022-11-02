@@ -72,7 +72,10 @@ export class GoogleOAuth {
   getUser = async (): Promise<Pick<IUser, 'name' | 'email'>> => {
     const { data } =
       (await this.peopleClient?.people.get({ resourceName: 'people/me', personFields: 'emailAddresses,names' })) || {};
-    return { name: _.get(data, 'names[0].displayName', ''), email: _.get(data, 'emailAddresses[0].value', '') };
+    return {
+      name: _.get(data, 'names[0].displayName', '') ?? '',
+      email: _.get(data, 'emailAddresses[0].value', '') ?? '',
+    };
   };
 
   getContacts = async (): Promise<IContacts[]> => {
@@ -83,7 +86,7 @@ export class GoogleOAuth {
       })) || {};
 
     return _.get(data, 'connections', []).map((el): IContacts => {
-      return { name: _.get(el, 'names[0].displayName'), email: _.get(el, 'emailAddresses[0].value') };
+      return { name: _.get(el, 'names[0].displayName') ?? '', email: _.get(el, 'emailAddresses[0].value') ?? '' };
     });
   };
 }
